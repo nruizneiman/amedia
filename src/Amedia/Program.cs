@@ -3,11 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using static System.Formats.Asn1.AsnWriter;
 using System.Net.NetworkInformation;
 using System;
+using Amedia.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<AuthLogic>();
+builder.Services.AddTransient<UsersLogic>();
 
 builder.Services.AddDbContext<AmediaContext>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("AmediaContext")));
