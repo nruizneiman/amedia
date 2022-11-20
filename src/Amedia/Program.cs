@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(s => s.IdleTimeout = TimeSpan.FromMinutes(30));
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddTransient<AuthLogic>();
 builder.Services.AddTransient<UsersLogic>();
@@ -40,6 +43,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

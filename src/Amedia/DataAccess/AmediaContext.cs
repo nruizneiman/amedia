@@ -20,7 +20,7 @@ namespace Amedia.DataAccess
             modelBuilder.Entity<UserRole>().HasData(new UserRole { Id = 1, Name = "Administrator", RelativeStartupPagePath = "/Users/Management" });
             modelBuilder.Entity<UserRole>().HasData(new UserRole { Id = 2, Name = "Guest", RelativeStartupPagePath = "/Users/Index" });
 
-            modelBuilder.Entity<User>().HasData(new User { Id = 1, UserName = "admin", Password = SecurityHelper.HashPassword("admin"), RoleId = 1 });
+            modelBuilder.Entity<User>().HasData(new User { Id = 1, UserName = "admin", Password = SecurityHelper.HashPassword(password: "admin"), RoleId = 1 });
 
             base.OnModelCreating(modelBuilder);
         }

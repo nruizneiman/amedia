@@ -10,5 +10,12 @@ namespace Amedia.Helpers
 
             return hashedPassword;
         }
+
+        public static PasswordVerificationResult ValidatePassword(string hashedPassword, string password)
+        {
+            var passwordVerificationResult = new PasswordHasher<object?>().VerifyHashedPassword(null, hashedPassword, password);
+
+            return passwordVerificationResult;
+        }
     }
 }

@@ -1,23 +1,30 @@
 using Amedia.Domain;
 using Amedia.Logic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Amedia.Areas.Users.Pages
 {
     public class ManagementModel : PageModel
     {
-        private UsersLogic _logic;
+        private readonly UsersLogic _userLogic;
+        private readonly AuthLogic _authLogic;
 
         public IEnumerable<User> Users { get; set; }
 
-        public ManagementModel(UsersLogic logic)
+        public ManagementModel(UsersLogic userLogic, AuthLogic authLogic)
         {
-            _logic = logic;
+            _userLogic = userLogic;
+            _authLogic = authLogic;
         }
 
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            Users = _logic.GetAllUsers();
+            var loggedInUser = HttpContext.Session.GetString("LoggedInUserId");
+            if (!_authLogic.UserHasAccess(loggedInUser)) return Redirect("~/");
+
+            Users = _userLogic.GetAllUsers();
+            return Page();
         }
     }
 }

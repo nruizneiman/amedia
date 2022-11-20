@@ -15,14 +15,19 @@ namespace Amedia.Areas.Users.Pages
         public IEnumerable<SelectListItem> Roles { get; set; }
 
         private readonly UsersLogic _userLogic;
+        private readonly AuthLogic _authLogic;
 
-        public EditModel(UsersLogic userLogic)
+        public EditModel(UsersLogic userLogic, AuthLogic authLogic)
         {
             _userLogic = userLogic;
+            _authLogic = authLogic;
         }
 
-        public void OnGet(int id)
+        public async Task<IActionResult> OnGet(int id)
         {
+            var loggedInUser = HttpContext.Session.GetString("LoggedInUserId");
+            if (!_authLogic.UserHasAccess(loggedInUser)) return Redirect("~/");
+
             var user = _userLogic.GetUserDetails(id);
 
             User = new UserVM
@@ -40,9 +45,11 @@ namespace Amedia.Areas.Users.Pages
                 Value = r.Id.ToString(),
                 Selected = r.Id == user.RoleId
             }).ToList();
+
+            return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPost()
         {
             try
             {
