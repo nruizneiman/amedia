@@ -63,5 +63,10 @@ namespace Amedia.Logic
                 throw new Exception("User not found");
             }
         }
+
+        public IEnumerable<UserRole> GetAllRoles()
+        {
+            return _context.UserRoles;
+        }
     }
 }
